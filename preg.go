@@ -1,9 +1,5 @@
 //
-// Copyright (c) 2019 Red Matter Ltd. UK. All rights reserved.
-// Unauthorized copying of this file, via any medium is strictly prohibited
-// Proprietary and confidential
-//
-// Created by Dino Korah on 29/03/2019.
+// Copyright (c) 2019 Red Matter Ltd. UK
 //
 // The core of the logic is translated from https://github.com/fitzgen/glob-to-regexp
 //
@@ -30,7 +26,9 @@ func escapeDelimiter(delimiter rune) (outsideClass, insideClass string) {
 	}
 }
 
-func RegexFromGlob(glob string, config GlobOptions) string {
+// RegexFromGlob converts the glob string into a regexp string with options "extended" & "glob-star" enabled, and with
+// the default delimiter '/'
+func RegexFromGlob(glob string) string {
 	return RegexFromGlobWithOptions(glob, GlobOptions{
 		Extended:  true,
 		GlobStar:  true,
@@ -38,6 +36,7 @@ func RegexFromGlob(glob string, config GlobOptions) string {
 	})
 }
 
+// RegexFromGlobWithOptions converts glob to regexp string with the given options
 func RegexFromGlobWithOptions(glob string, config GlobOptions) string {
 	reStr := ""
 
@@ -70,7 +69,6 @@ func RegexFromGlobWithOptions(glob string, config GlobOptions) string {
 
 		case '[', ']':
 			if config.Extended {
-
 				reStr += string(c)
 				break
 			}
