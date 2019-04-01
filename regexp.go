@@ -129,11 +129,11 @@ func RegexFromGlobWithOptions(glob string, config GlobOptions) string {
 
 				if isGlobstar {
 					// it's a globstar, so match zero or more path segments
-					reStr += "((?:[^" + delimiterInsideClass + "]*(?:" + delimiterOutsideClass + "|$))*)"
+					reStr += "(?:(?:[^" + delimiterInsideClass + "]*(?:" + delimiterOutsideClass + "|$))*)"
 					i++ // move over the delimiter
 				} else {
 					// it's not a globstar, so only match one path segment
-					reStr += "([^" + delimiterInsideClass + "]*)"
+					reStr += "(?:[^" + delimiterInsideClass + "]*)"
 				}
 			}
 			break
