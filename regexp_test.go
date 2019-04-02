@@ -2,7 +2,7 @@
 // Copyright (c) 2019 Red Matter Ltd. UK
 //
 
-package globtoregexp
+package globre
 
 import (
 	"regexp"
@@ -247,9 +247,4 @@ func TestRegexFromGlobWithDelimiter(t *testing.T) {
 	assertMatch(t, "http*?**",
 		"http://foo.com/bar/baz/jquery.min.js?yahhooo",
 		GlobOptions{GlobStar: true, Delimiter: '?'})
-}
-
-func TestRegexFromGlob2(t *testing.T) {
-	assertMatch(t, "{http,https}://example.com/**", "http://foo.com/bar/baz/jquery.min.js?yahhooo", GlobOptions{GlobStar: true, Extended: true})
-
 }

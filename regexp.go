@@ -4,7 +4,7 @@
 // The core of the logic is translated from https://github.com/fitzgen/glob-to-regexp
 //
 
-package globtoregexp
+package globre
 
 type GlobOptions struct {
 	Extended  bool
@@ -57,7 +57,6 @@ func RegexFromGlobWithOptions(glob string, config GlobOptions) string {
 		switch c {
 		case '/', '$', '^', '+', '.', '(', ')', '=', '!', '|':
 			reStr += "\\" + string(c)
-			break
 
 		case '?':
 			if config.Extended {
@@ -136,7 +135,6 @@ func RegexFromGlobWithOptions(glob string, config GlobOptions) string {
 					reStr += "(?:[^" + delimiterInsideClass + "]*)"
 				}
 			}
-			break
 
 		default:
 			reStr += string(c)
