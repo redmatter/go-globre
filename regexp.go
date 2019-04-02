@@ -6,7 +6,7 @@
 
 package globre
 
-type GlobOptions struct {
+type Options struct {
 	Extended  bool
 	GlobStar  bool
 	Delimiter rune
@@ -29,7 +29,7 @@ func escapeDelimiter(delimiter rune) (outsideClass, insideClass string) {
 // RegexFromGlob converts the glob string into a regexp string with options "extended" & "glob-star" enabled, and with
 // the default delimiter '/'
 func RegexFromGlob(glob string) string {
-	return RegexFromGlobWithOptions(glob, GlobOptions{
+	return RegexFromGlobWithOptions(glob, Options{
 		Extended:  true,
 		GlobStar:  true,
 		Delimiter: '/',
@@ -37,7 +37,7 @@ func RegexFromGlob(glob string) string {
 }
 
 // RegexFromGlobWithOptions converts glob to regexp string with the given options
-func RegexFromGlobWithOptions(glob string, config GlobOptions) string {
+func RegexFromGlobWithOptions(glob string, config Options) string {
 	reStr := ""
 
 	delimiter := '/'
