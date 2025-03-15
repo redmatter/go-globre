@@ -17,7 +17,7 @@ import (
 urlGlob := "{http,https}://example.com/**"
 // converts to ^(http|https):\/\/example\.com\/(?:(?:[^/]*(?:/|$))*)$
 urlRe := globre.RegexFromGlob(
-	urlGlob,
+    urlGlob,
     globre.ExtendedSyntaxEnabled(true),
     globre.GlobStarEnabled(true),
     globre.WithDelimiter('/'),
@@ -28,7 +28,7 @@ urlRegexp := regexp.MustCompile(urlRe)
 
 // Match the url
 if urlRegexp.MatchString("https://example.com/index.htm") {
-	// do something
+    // do something
 }
 ```
 
@@ -36,11 +36,11 @@ if urlRegexp.MatchString("https://example.com/index.htm") {
 
 The conversion to regexp can be modified using the following Option functions:
 
-| Option                | Default Value | Description                                        |
-|:----------------------|---------------|:---------------------------------------------------|
-| WithDelimiter         | '/'           | Delimiter used for tokenising the compared string  |
-| ExtendedSyntaxEnabled | false         | Enable extended globs, supporting classes, etc.    |
-| GlobStarEnabled       | false         | Enables "double-star" match for one or more tokens |
+| Option                  | Default Value | Description                                        |
+|:------------------------|---------------|:---------------------------------------------------|
+| `WithDelimiter`         | `'/'`         | Delimiter used for tokenising the compared string  |
+| `ExtendedSyntaxEnabled` | `false`       | Enable extended globs, supporting classes, etc.    |
+| `GlobStarEnabled`       | `false`       | Enables "double-star" match for one or more tokens |
 
 # License
 
