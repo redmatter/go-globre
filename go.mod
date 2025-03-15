@@ -1,4 +1,4 @@
-module github.com/redmatter/go-globre
+module github.com/redmatter/go-globre/v2
 
 go 1.22.0
 

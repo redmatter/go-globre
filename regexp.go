@@ -6,7 +6,7 @@
 
 package globre
 
-type Options struct {
+type options struct {
 	Extended  bool
 	GlobStar  bool
 	Delimiter rune
@@ -26,26 +26,47 @@ func escapeDelimiter(delimiter rune) (outsideClass, insideClass string) {
 	}
 }
 
-// RegexFromGlob converts the glob string into a regexp string with options "extended" & "glob-star" enabled, and with
-// the default delimiter '/'
-func RegexFromGlob(glob string) string {
-	return RegexFromGlobWithOptions(glob, Options{
-		Extended:  true,
-		GlobStar:  true,
-		Delimiter: '/',
-	})
+// ExtendedSyntaxEnabled enable or disable extended glob syntax (default is disabled).
+func ExtendedSyntaxEnabled(enabled bool) Option {
+	return func(options *options) {
+		options.Extended = enabled
+	}
 }
 
-// RegexFromGlobWithOptions converts glob to regexp string with the given options
-func RegexFromGlobWithOptions(glob string, config Options) string {
-	reStr := ""
+// GlobStarEnabled enable or disable globstar syntax (default is disabled).
+func GlobStarEnabled(enabled bool) Option {
+	return func(options *options) {
+		options.GlobStar = enabled
+	}
+}
 
-	delimiter := '/'
-	if config.Delimiter != 0 {
-		delimiter = config.Delimiter
+// WithDelimiter sets the delimiter to use (default is '/').
+func WithDelimiter(delimiter rune) Option {
+	return func(options *options) {
+		options.Delimiter = delimiter
+	}
+}
+
+type Option func(*options)
+
+// RegexFromGlob converts the glob string into a regexp string with options "extended" & "glob-star" enabled, and with
+// the default delimiter '/'
+func RegexFromGlob(glob string, opts ...Option) string {
+	o := options{
+		Extended:  false,
+		GlobStar:  false,
+		Delimiter: '/',
 	}
 
-	delimiterOutsideClass, delimiterInsideClass := escapeDelimiter(delimiter)
+	// apply options
+	for _, opt := range opts {
+		opt(&o)
+	}
+
+	reStr := ""
+
+	// escape the delimiter
+	delimiterOutsideClass, delimiterInsideClass := escapeDelimiter(o.Delimiter)
 
 	inGroup := false
 
@@ -59,7 +80,7 @@ func RegexFromGlobWithOptions(glob string, config Options) string {
 			reStr += "\\" + string(c)
 
 		case '?':
-			if config.Extended {
+			if o.Extended {
 				reStr += "."
 				break
 			}
@@ -67,7 +88,7 @@ func RegexFromGlobWithOptions(glob string, config Options) string {
 			reStr += "\\" + string(c)
 
 		case '[', ']':
-			if config.Extended {
+			if o.Extended {
 				reStr += string(c)
 				break
 			}
@@ -75,7 +96,7 @@ func RegexFromGlobWithOptions(glob string, config Options) string {
 			reStr += "\\" + string(c)
 
 		case '{':
-			if config.Extended {
+			if o.Extended {
 				inGroup = true
 				reStr += "("
 				break
@@ -84,7 +105,7 @@ func RegexFromGlobWithOptions(glob string, config Options) string {
 			reStr += "\\" + string(c)
 
 		case '}':
-			if config.Extended {
+			if o.Extended {
 				inGroup = false
 				reStr += ")"
 				break
@@ -117,14 +138,14 @@ func RegexFromGlobWithOptions(glob string, config Options) string {
 				nextChar = rune(glob[i+1])
 			}
 
-			if !config.GlobStar {
+			if !o.GlobStar {
 				// globstar is disabled, so treat any number of "*" as one
 				reStr += ".*"
 			} else {
 				// globstar is enabled, so determine if this is a globstar segment
 				isGlobstar := starCount > 1 && // multiple "*"'s
-					(prevChar == delimiter || prevChar == 0) && // from the start of the segment
-					(nextChar == delimiter || nextChar == 0) // to the end of the segment
+					(prevChar == o.Delimiter || prevChar == 0) && // from the start of the segment
+					(nextChar == o.Delimiter || nextChar == 0) // to the end of the segment
 
 				if isGlobstar {
 					// it's a globstar, so match zero or more path segments
