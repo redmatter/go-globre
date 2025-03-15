@@ -1,7 +1,7 @@
 # Glob to RegExp
 
-[![GoDoc](https://godoc.org/github.com/redmatter/go-globre?status.svg)](https://godoc.org/github.com/redmatter/go-globre)
-[![Go Report Card](https://goreportcard.com/badge/github.com/redmatter/go-globre)](https://goreportcard.com/report/github.com/redmatter/go-globre)
+[![GoDoc](https://godoc.org/github.com/redmatter/go-globre/v2?status.svg)](https://godoc.org/github.com/redmatter/go-globre/v2)
+[![Go Report Card](https://goreportcard.com/badge/github.com/redmatter/go-globre/v2)](https://goreportcard.com/report/github.com/redmatter/go-globre/v2)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A library for converting glob strings to regular expressions in golang.
